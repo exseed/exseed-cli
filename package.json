@@ -1,0 +1,58 @@
+{
+  "name": "exseed-cli",
+  "version": "0.1.0",
+  "description": "exseed command line tool",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "npm run jscs && npm run build && npm run mocha",
+    "jscs": "jscs ./src --config=./.jscsrc --verbose",
+    "build": "gulp build",
+    "mocha": "mocha ./tests",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/exseed/exseed-cli.git"
+  },
+  "keywords": [
+    "node",
+    "framework",
+    "extensible",
+    "command line",
+    "cli"
+  ],
+  "author": "gocreating",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/exseed/exseed-cli/issues"
+  },
+  "homepage": "https://github.com/exseed/exseed-cli",
+  "bin": {
+    "sd": "dist/index.js"
+  },
+  "dependencies": {
+    "babel-core": "^6.1.2",
+    "babel-loader": "^6.2.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.0.14",
+    "babel-preset-react": "^6.1.2",
+    "babel-preset-react-hmre": "^1.0.1",
+    "babel-preset-stage-0": "^6.3.13",
+    "commander": "^2.9.0",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.0.0",
+    "gulp-changed": "^1.3.0",
+    "gulp-if": "^2.0.0",
+    "gulp-mocha": "^2.2.0",
+    "gulp-nodemon": "^2.0.4",
+    "gulp-notify": "^2.2.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-util": "^3.0.7",
+    "react": "^0.14.6",
+    "webpack": "^1.9.6"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "gulp-clean": "^0.3.1"
+  }
+}
