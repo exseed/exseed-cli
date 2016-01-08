@@ -7,7 +7,7 @@
     "test": "npm run jscs && npm run build && npm run mocha",
     "jscs": "jscs ./src --config=./.jscsrc --verbose",
     "build": "gulp build",
-    "mocha": "mocha ./tests",
+    "mocha": "mocha ./tests/modules/index.js ./tests/commands/index.js",
     "prepublish": "npm run build"
   },
   "repository": {
