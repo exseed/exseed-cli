@@ -12,12 +12,13 @@ var files = {
   ],
 };
 
+// clean build files
 gulp.task('clean', function(done) {
   rimraf('./build', done);
 });
 
 // build source files
-gulp.task('build', ['clean'], function() {
+gulp.task('build', function() {
   return gulp
     .src(files.src)
     .pipe(changed('./dist'))
