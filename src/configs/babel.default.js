@@ -1,5 +1,5 @@
 export default {
-  cacheDirectory: true,
+  // cacheDirectory: true,
   plugins: [
     'transform-decorators-legacy',
   ],

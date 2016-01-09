@@ -1,5 +1,5 @@
 import webpack from 'webpack';
-import babelConfig from './babel';
+import defaultBabelConfig from './babel.default';
 
 export default {
   devtool: 'source-map',
@@ -26,7 +26,7 @@ export default {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loaders: ['babel?' + JSON.stringify(babelConfig)],
+      loaders: ['babel?' + JSON.stringify(defaultBabelConfig)],
     },],
   },
 };
