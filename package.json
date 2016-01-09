@@ -48,7 +48,9 @@
     "gulp-notify": "^2.2.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
+    "pretty-hrtime": "^1.0.1",
     "react": "^0.14.6",
+    "rimraf": "^2.5.0",
     "webpack": "^1.9.6"
   },
   "devDependencies": {
