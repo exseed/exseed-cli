@@ -1,18 +1,18 @@
-const path = require('path');
-const gulp = require('gulp');
-const notify = require("gulp-notify");
-const changed = require('gulp-changed');
-const clean = require('gulp-clean');
-const babel = require('gulp-babel');
-const sourcemaps = require('gulp-sourcemaps');
+var path = require('path');
+var gulp = require('gulp');
+var notify = require("gulp-notify");
+var changed = require('gulp-changed');
+var clean = require('gulp-clean');
+var babel = require('gulp-babel');
+var sourcemaps = require('gulp-sourcemaps');
 
-const files = {
+var files = {
   src: [
     './src/**/*.js',
   ],
 };
 
-gulp.task('clean', () => {
+gulp.task('clean', function() {
   return gulp
     .src('./build', {
       read: false,
@@ -21,7 +21,7 @@ gulp.task('clean', () => {
 });
 
 // build source files
-gulp.task('build', ['clean'], () => {
+gulp.task('build', ['clean'], function() {
   return gulp
     .src(files.src)
     .pipe(changed('./dist'))
@@ -39,7 +39,7 @@ gulp.task('build', ['clean'], () => {
       }))
     .pipe(sourcemaps.write({
       includeContent: false,
-      sourceRoot: (file) => {
+      sourceRoot: function(file) {
         return path.resolve(__dirname, 'src');
       },
     }))
@@ -47,11 +47,11 @@ gulp.task('build', ['clean'], () => {
 });
 
 // watching source files
-gulp.task('watch', () => {
+gulp.task('watch', function() {
   gulp.watch(files.src, ['build']);
 });
 
 // run gulp tasks
-gulp.task('default', () => {
+gulp.task('default', function() {
   gulp.start('clean', 'build', 'watch');
 });

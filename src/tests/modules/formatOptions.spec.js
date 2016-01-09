@@ -1,9 +1,9 @@
-const chai = require('chai');
-const path = require('path');
+import chai from 'chai';
+import path from 'path';
 const expect = chai.expect;
 
 describe('#formatOptions', () => {
-  const formatOptions = require('../../dist/formatOptions').default;
+  const formatOptions = require('../../formatOptions').default;
   const cwd = process.cwd();
   const testCases = [{
     description: 'should use `development` env when --env=development',
