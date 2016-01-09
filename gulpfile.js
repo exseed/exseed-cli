@@ -2,9 +2,9 @@ var path = require('path');
 var gulp = require('gulp');
 var notify = require("gulp-notify");
 var changed = require('gulp-changed');
-var clean = require('gulp-clean');
 var babel = require('gulp-babel');
 var sourcemaps = require('gulp-sourcemaps');
+var rimraf = require('rimraf');
 
 var files = {
   src: [
@@ -12,12 +12,8 @@ var files = {
   ],
 };
 
-gulp.task('clean', function() {
-  return gulp
-    .src('./build', {
-      read: false,
-    })
-    .pipe(clean());
+gulp.task('clean', function(done) {
+  rimraf('./build', done);
 });
 
 // build source files
