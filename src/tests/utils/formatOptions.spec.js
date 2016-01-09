@@ -21,6 +21,7 @@ describe('#formatOptions', () => {
         },
         watch: false,
         dir: {
+          root: cwd,
           src: path.join(cwd, './src'),
           target: path.join(cwd, './build'),
         },
@@ -39,6 +40,7 @@ describe('#formatOptions', () => {
         },
         watch: false,
         dir: {
+          root: cwd,
           src: path.join(cwd, './src'),
           target: path.join(cwd, './build'),
         },
@@ -57,6 +59,7 @@ describe('#formatOptions', () => {
         },
         watch: false,
         dir: {
+          root: cwd,
           src: path.join(cwd, './src'),
           target: path.join(cwd, './build'),
         },
@@ -75,6 +78,7 @@ describe('#formatOptions', () => {
         },
         watch: false,
         dir: {
+          root: cwd,
           src: path.join(cwd, './src'),
           target: path.join(cwd, './build'),
         },
@@ -93,6 +97,7 @@ describe('#formatOptions', () => {
         },
         watch: true,
         dir: {
+          root: cwd,
           src: path.join(cwd, './src'),
           target: path.join(cwd, './build'),
         },
@@ -112,6 +117,7 @@ describe('#formatOptions', () => {
         },
         watch: false,
         dir: {
+          root: cwd,
           src: path.join(cwd, './testSrc'),
           target: path.join(cwd, './testBuild'),
         },

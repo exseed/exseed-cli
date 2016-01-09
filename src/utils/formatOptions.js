@@ -16,6 +16,7 @@ export default function formatOptions(commandOptions) {
     },
     watch: commandOptions.watch === true,
     dir: {
+      root: cwd,
       src: path.join(cwd, commandOptions.source || './src'),
       target: path.join(cwd, commandOptions.target || './build'),
     },
