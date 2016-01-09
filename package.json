@@ -6,8 +6,8 @@
   "scripts": {
     "test": "npm run jscs && npm run build && npm run mocha",
     "jscs": "jscs ./src --config=./.jscsrc --verbose",
-    "build": "gulp build",
-    "mocha": "mocha --harmony ./dist/tests/modules/index.js ./dist/tests/commands/index.js",
+    "build": "gulp clean && gulp build",
+    "mocha": "mocha --harmony ./dist/tests/utils/index.js ./dist/tests/commands/index.js",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -21,7 +21,7 @@
     "command line",
     "cli"
   ],
-  "author": "gocreating",
+  "author": "Weng, Chih-Ping <gocreating@gmail.com> (http://github.com/gocreating)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/exseed/exseed-cli/issues"

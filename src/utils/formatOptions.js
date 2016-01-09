@@ -1,6 +1,6 @@
 import path from 'path';
 
-export default function(commandOptions) {
+export default function formatOptions(commandOptions) {
   const cwd = process.cwd();
   let NODE_ENV = commandOptions.env || 'development';
   if (['development', 'test', 'production'].indexOf(NODE_ENV) < 0) {

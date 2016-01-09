@@ -1,3 +1,3 @@
-describe('modules', () => {
+describe('utils', () => {
   require('./formatOptions.spec');
 });
