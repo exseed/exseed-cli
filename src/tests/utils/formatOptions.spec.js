@@ -6,6 +6,7 @@ import { formatOptions } from '../../utils/';
 
 describe('#formatOptions', () => {
   const cwd = process.cwd();
+  const cliRoot = path.join(__dirname, '../../../');
   const testCases = [
     {
       description: 'should use `development` env when --env=development',
@@ -21,6 +22,7 @@ describe('#formatOptions', () => {
         },
         watch: false,
         dir: {
+          cliRoot: cliRoot,
           root: cwd,
           src: path.join(cwd, './src'),
           target: path.join(cwd, './build'),
@@ -40,6 +42,7 @@ describe('#formatOptions', () => {
         },
         watch: false,
         dir: {
+          cliRoot: cliRoot,
           root: cwd,
           src: path.join(cwd, './src'),
           target: path.join(cwd, './build'),
@@ -59,6 +62,7 @@ describe('#formatOptions', () => {
         },
         watch: false,
         dir: {
+          cliRoot: cliRoot,
           root: cwd,
           src: path.join(cwd, './src'),
           target: path.join(cwd, './build'),
@@ -78,6 +82,7 @@ describe('#formatOptions', () => {
         },
         watch: false,
         dir: {
+          cliRoot: cliRoot,
           root: cwd,
           src: path.join(cwd, './src'),
           target: path.join(cwd, './build'),
@@ -97,6 +102,7 @@ describe('#formatOptions', () => {
         },
         watch: true,
         dir: {
+          cliRoot: cliRoot,
           root: cwd,
           src: path.join(cwd, './src'),
           target: path.join(cwd, './build'),
@@ -117,6 +123,7 @@ describe('#formatOptions', () => {
         },
         watch: false,
         dir: {
+          cliRoot: cliRoot,
           root: cwd,
           src: path.join(cwd, './testSrc'),
           target: path.join(cwd, './testBuild'),
