@@ -57,7 +57,8 @@ export default function defineTasks(opts) {
 
   // clean build files
   gulp.task('clean', (done) => {
-    rimraf(opts.dir.target, done);
+    rimraf.sync(opts.dir.target);
+    done();
   });
 
   // output formated options
@@ -66,7 +67,7 @@ export default function defineTasks(opts) {
   });
 
   // build source files
-  gulp.task('build', ['clean'], () => {
+  gulp.task('build', () => {
     return gulp
       .src(files.scripts)
       .pipe(gulpif(opts.watch, changed(opts.dir.target)))
@@ -120,7 +121,7 @@ export default function defineTasks(opts) {
   });
 
   // copy static files
-  gulp.task('copy', ['clean'], function() {
+  gulp.task('copy', function() {
     return gulp
       .src(files.statics/*, {
         read: false,
