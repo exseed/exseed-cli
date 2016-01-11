@@ -11,9 +11,12 @@ import fs from 'fs';
 // vendor packages
 import program from 'commander';
 import gulp from 'gulp';
+import gutil from 'gulp-util';
 
 // local modules
 import pkg from '../package.json';
+import { formatOptions } from './utils/';
+import { registerTasks } from './tasks/';
 
 // ======================
 // Definition of commands
@@ -29,6 +32,33 @@ program
   .description('show hello message')
   .action(() => {
     console.log('hello, this is a hello message from exseed command line tool');
+  });
+
+// specify command `build`
+program
+  .command('build')
+  .alias('b')
+  .description('build source files')
+  .option(
+    '-e, --env <env>',
+    'build environment (development|test|production)',
+    'development')
+  .option(
+    '-w, --watch',
+    'monitor `source` files changing, for react components, use livereload')
+  .option(
+    '-s, --source <source>',
+    'source code directory',
+    './src')
+  .option(
+    '-t, --target <target>',
+    'build target directory',
+    './build')
+  .action((options) => {
+    const opts = formatOptions(options);
+    registerTasks(opts);
+    // run gulp tasks
+    gulp.start('clean', 'output:options', 'build', 'webpack', 'copy', 'watch');
   });
 
 // to customize command name in help information
