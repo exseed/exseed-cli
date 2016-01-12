@@ -7,6 +7,7 @@
 // native packages
 import path from 'path';
 import fs from 'fs';
+import { exec } from 'child_process';
 
 // vendor packages
 import program from 'commander';
@@ -15,7 +16,7 @@ import gutil from 'gulp-util';
 
 // local modules
 import pkg from '../package.json';
-import { formatOptions } from './utils/';
+import { formatOptions, readFormatOptions } from './utils/';
 import { registerTasks } from './tasks/';
 
 // ======================
@@ -59,6 +60,36 @@ program
     registerTasks(opts);
     // run gulp tasks
     gulp.start('clean', 'output:options', 'build', 'webpack', 'copy', 'watch');
+  });
+
+// specify command `initialize`
+program
+  .command('init')
+  .description('initialize installed apps, required to run `build` first')
+  .option(
+    '-a, --app [name]',
+    'initialize specified app')
+  .action((options) => {
+    readFormatOptions((err, opts) => {
+      if (err) {
+        return gutil.log('Please build project before init');
+      }
+      const entryPath = path.join(opts.dir.target, 'server.js');
+      const child = exec(`node ${entryPath}`, {
+        env: {
+          EXSEED_OPTIONS: JSON.stringify({
+            init: true,
+            name: options.app,
+          }),
+        },
+      });
+      child.stdout.on('data', (data) => {
+        gutil.log(data);
+      });
+      child.stderr.on('data', (data) => {
+        gutil.log(data);
+      });
+    });
   });
 
 // to customize command name in help information
