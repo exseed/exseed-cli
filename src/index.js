@@ -92,6 +92,22 @@ program
     });
   });
 
+// specify command `serve`
+program
+  .command('serve')
+  .alias('s')
+  .description('run server, required to run `build` first')
+  .action((options) => {
+    readFormatOptions((err, opts) => {
+      if (err) {
+        return gutil.log('Please build project before serve');
+      }
+      registerTasks(opts);
+      // run gulp tasks
+      gulp.start('serve');
+    });
+  });
+
 // to customize command name in help information
 // ref: https://github.com/tj/commander.js/issues/466
 process.argv[1] = 'sd';

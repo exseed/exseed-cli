@@ -45,7 +45,7 @@ export default function defineTasks(opts) {
     statics: [
       path.join(opts.dir.src, '*/public/**/*'),
     ],
-    nodemonRestartIgnore: [
+    nodemonWatchIgnore: [
       'gulpfile.js',
       'node_modules/**/*',
       path.join(opts.dir.src, '**/*'),
@@ -128,6 +128,29 @@ export default function defineTasks(opts) {
       }*/)
       .pipe(gulpif(opts.watch, changed(opts.dir.target)))
       .pipe(gulp.dest(opts.dir.target));
+  });
+
+  gulp.task('serve', (cb) => {
+    let started = false;
+    const entryPath = path.join(opts.dir.target, 'server.js');
+
+    return nodemon({
+      script: entryPath,
+      watch: [`${opts.dir.target}/**/*.js`],
+      ext: 'js',
+      env: {
+        NODE_ENV: opts.env.NODE_ENV,
+      },
+      ignore: files.nodemonWatchIgnore,
+    })
+    .on('start', () => {
+      if (!started) {
+        cb();
+        started = true;
+      }
+    })
+    .on('restart', () => {
+    });
   });
 
   // watching source files
