@@ -1,14 +1,13 @@
 import fs from 'fs';
 import path from 'path';
-
-const FILE_NAME = 'exseed.opts.json';
+import { FORMAT_OPTION_FILE_NAME } from '../constants';
 
 export default function outputFormatOptions(opts, cb) {
   const outputPath = {
     // for cli
-    cli: path.join(opts.dir.root, FILE_NAME),
+    cli: path.join(opts.dir.root, FORMAT_OPTION_FILE_NAME),
     // for app
-    app: path.join(opts.dir.target, FILE_NAME),
+    app: path.join(opts.dir.target, FORMAT_OPTION_FILE_NAME),
   };
   const outputContent = JSON.stringify(opts);
 
