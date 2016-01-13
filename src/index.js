@@ -7,7 +7,6 @@
 // native packages
 import path from 'path';
 import fs from 'fs';
-import { exec } from 'child_process';
 
 // vendor packages
 import program from 'commander';
@@ -74,21 +73,12 @@ program
       if (err) {
         return gutil.log('Please build project before init');
       }
-      const entryPath = path.join(opts.dir.target, 'server.js');
-      const child = exec(`node ${entryPath}`, {
-        env: {
-          EXSEED_OPTIONS: JSON.stringify({
-            init: true,
-            name: options.app,
-          }),
-        },
+      Object.assign(opts, {
+        app: options.app,
       });
-      child.stdout.on('data', (data) => {
-        gutil.log(data);
-      });
-      child.stderr.on('data', (data) => {
-        gutil.log(data);
-      });
+      registerTasks(opts);
+      // run gulp tasks
+      gulp.start('init');
     });
   });
 

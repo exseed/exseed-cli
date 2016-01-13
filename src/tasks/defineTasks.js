@@ -5,6 +5,7 @@
 // native packages
 import path from 'path';
 import fs from 'fs';
+import { exec } from 'child_process';
 
 // vendor packages
 import gulp from 'gulp';
@@ -128,6 +129,27 @@ export default function defineTasks(opts) {
       }*/)
       .pipe(gulpif(opts.watch, changed(opts.dir.target)))
       .pipe(gulp.dest(opts.dir.target));
+  });
+
+  gulp.task('init', (cb) => {
+    const entryPath = path.join(opts.dir.target, 'server.js');
+    const child = exec(`node ${entryPath}`, {
+      env: {
+        EXSEED_OPTIONS: JSON.stringify({
+          init: true,
+          name: opts.app,
+        }),
+      },
+    });
+    child.stdout.on('data', (data) => {
+      gutil.log(data);
+    });
+    child.stderr.on('data', (data) => {
+      gutil.log(data);
+    });
+    child.on('close', (code) => {
+      cb();
+    });
   });
 
   gulp.task('serve', (cb) => {
