@@ -9,4 +9,21 @@ Command line tool for [exseed](https://github.com/exseed/exseed) framework
 
 ## Usage
 
-TBD
+```
+$ sd -h
+
+  Usage: sd [options] [command]
+
+
+  Commands:
+
+    hello               show hello message
+    build|b [options]   build source files
+    init [options]      initialize installed apps, required to run `build` first
+    serve|s             run server, required to run `build` first
+
+  Options:
+
+    -h, --help     output usage information
+    -V, --version  output the version number
+```
