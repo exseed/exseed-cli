@@ -1,6 +1,5 @@
 import webpack from 'webpack';
-import defaultBabelConfig from './babel.default';
-defaultBabelConfig.presets.unshift('react-hmre');
+import livereloadBabelConfig from './babel.livereload';
 
 export default {
   devtool: 'eval',
@@ -25,7 +24,8 @@ export default {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loaders: ['babel?' + JSON.stringify(defaultBabelConfig)],
+      loader: 'babel',
+      query: livereloadBabelConfig,
     },],
   },
 };

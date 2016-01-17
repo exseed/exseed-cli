@@ -4,7 +4,7 @@
   "fileExtensions": [".js"],
   "excludeFiles": [
     "node_modules/**",
-    "dist/**",
+    "dist/**"
   ],
   "maximumLineLength": {
     "value": 80,

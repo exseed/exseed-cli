@@ -90,6 +90,8 @@ export default function defineTasks(opts) {
     const webpackConfig = require(`../configs/webpack.${opts.env.NODE_ENV}`).default;
     const settings = require(path.join(opts.dir.target, 'settings.js')).default;
     const { installedApps } = settings;
+
+    // insert entries
     const appAliasArray = installedApps
       .map((appPath) => {
         const appSrcPath = path.join(opts.dir.src, appPath);
@@ -106,18 +108,41 @@ export default function defineTasks(opts) {
       })
       .filter((appAlias) => appAlias);
 
+    // insert output path
     webpackConfig.output.path = opts.dir.target;
+
+    // insert common plugin
     webpackConfig.plugins.push(
       new webpack.optimize.CommonsChunkPlugin(
-        'public/js/common.js', appAliasArray),
+        'public/js/common.js', appAliasArray)
     );
+
+    // insert resolve paths of loaders
+    webpackConfig.resolveLoader = {
+      modulesDirectories: [
+        // the default value
+        // see https://webpack.github.io/docs/configuration.html#resolveloader
+        'web_loaders',
+        'web_modules',
+        'node_loaders',
+        'node_modules',
+        // use loaders (like babel-loader) installed in exseed-cli
+        path.join(opts.dir.cliRoot, 'node_modules'),
+      ],
+    };
 
     webpack(webpackConfig, (err, stats) => {
       if (err) {
-        gutil.log(err);
-      } else {
-        cb();
+        return cb(err);
       }
+      const jsonStats = stats.toJson();
+      if (jsonStats.errors.length > 0) {
+        return cb(jsonStats.errors);
+      }
+      if (jsonStats.warnings.length > 0) {
+        gutil.warn(jsonStats.warnings);
+      }
+      cb();
     });
   });
 

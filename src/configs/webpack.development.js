@@ -22,7 +22,8 @@ export default {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loaders: ['babel?' + JSON.stringify(defaultBabelConfig)],
+      loader: 'babel',
+      query: defaultBabelConfig,
     },],
   },
 };
