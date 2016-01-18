@@ -1,5 +1,4 @@
 export default {
-  cacheDirectory: true,
   plugins: [
     require.resolve('babel-plugin-transform-decorators-legacy'),
   ],

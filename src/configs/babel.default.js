@@ -1,7 +1,6 @@
 // https://github.com/babel/babel-loader/issues/166
 // https://github.com/babel/babel-loader/issues/196
 export default {
-  cacheDirectory: true,
   plugins: [
     require.resolve('babel-plugin-transform-decorators-legacy'),
   ],

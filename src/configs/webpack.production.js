@@ -27,7 +27,12 @@ export default {
       test: /\.jsx?$/,
       exclude: /node_modules/,
       loader: 'babel',
-      query: defaultBabelConfig,
+      query: {
+        // This is a loader-specific option, do not put it on .babelrc
+        // see https://github.com/babel/babel-loader#options
+        cacheDirectory: true,
+        ...defaultBabelConfig,
+      },
     },],
   },
 };
