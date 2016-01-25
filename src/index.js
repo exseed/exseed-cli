@@ -58,7 +58,15 @@ program
     const opts = formatOptions(options);
     registerTasks(opts);
     // run gulp tasks
-    gulp.start('clean', 'output:options', 'build', 'webpack', 'copy', 'watch');
+    gulp.start(
+      'clean',
+      'output:options',
+      'build:nodejs',
+      'build:reactjs',
+      'webpack',
+      'copy',
+      'watch'
+    );
   });
 
 // specify command `initialize`

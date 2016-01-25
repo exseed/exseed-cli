@@ -10,6 +10,9 @@ export default {
     filename: '[name]/js/bundle.js',
     publicPath: '/',
   },
+  resolve: {
+    alias: {},
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {

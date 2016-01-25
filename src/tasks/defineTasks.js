@@ -38,6 +38,7 @@ export default function defineTasks(opts) {
   const files = {
     scripts: [
       path.join(opts.dir.src, '**/*.js'),
+      '!' + path.join(opts.dir.src, '*/flux/**/*.js'),
       '!' + path.join(opts.dir.src, '*/public/**/*.js'),
     ],
     reacts: [
@@ -58,8 +59,13 @@ export default function defineTasks(opts) {
 
   // clean build files
   gulp.task('clean', (done) => {
-    rimraf.sync(opts.dir.target);
-    done();
+    try {
+      rimraf.sync(opts.dir.target);
+      done();
+    } catch (e) {
+      return gutil.log(
+        'Cannot clean build directory. Please shutdown the server first.');
+    }
   });
 
   // output formated options
@@ -67,8 +73,8 @@ export default function defineTasks(opts) {
     outputFormatOptions(opts, done);
   });
 
-  // build source files
-  gulp.task('build', () => {
+  // build nodejs source files
+  gulp.task('build:nodejs', () => {
     return gulp
       .src(files.scripts)
       .pipe(gulpif(opts.watch, changed(opts.dir.target)))
@@ -85,25 +91,63 @@ export default function defineTasks(opts) {
       .pipe(gulp.dest(opts.dir.target));
   });
 
+  // build reactjs source files
+  gulp.task('build:reactjs', ['build:nodejs'], () => {
+    const settings = require(path.join(opts.dir.target, 'settings.js')).default;
+    const { installedApps } = settings;
+    defaultBabelConfig.resolveModuleSource = (source, filename) => {
+      if (filename.match(/flux/)) {
+        installedApps.forEach((appPath) => {
+          const appTargetPath = path.join(opts.dir.target, appPath);
+          const appSettings = require(path.join(appTargetPath, 'settings.js')).default;
+          source = source.replace(
+            `@${appSettings.name}`, path.join(appTargetPath, 'flux'));
+        });
+      }
+      return source;
+    };
+
+    return gulp
+      .src(files.reacts)
+      .pipe(gulpif(opts.watch, changed(opts.dir.target)))
+      .pipe(gulpif(opts.env.development, sourcemaps.init()))
+        .pipe(babel(defaultBabelConfig))
+        .on('error', notify.onError({
+          title: 'babel fail',
+          message: '<%= error.message %>',
+        }))
+      .pipe(gulpif(opts.env.development, sourcemaps.write({
+        includeContent: false,
+        sourceRoot: (file) => path.join(process.cwd(), opts.dir.src),
+      })))
+      .pipe(gulp.dest(opts.dir.target));
+  });
+
   // bundle react components
-  gulp.task('webpack', ['build'], (cb) => {
+  gulp.task('webpack', ['build:reactjs'], (cb) => {
     const webpackConfig = require(`../configs/webpack.${opts.env.NODE_ENV}`).default;
     const settings = require(path.join(opts.dir.target, 'settings.js')).default;
     const { installedApps } = settings;
 
-    // insert entries
     const appAliasArray = installedApps
       .map((appPath) => {
         const appSrcPath = path.join(opts.dir.src, appPath);
         const appTargetPath = path.join(opts.dir.target, appPath);
         const entryPath = path.join(appSrcPath, 'flux/boot.js');
+        const appSettings = require(path.join(appTargetPath, 'settings.js')).default;
+
+        // insert resolve alias
+        webpackConfig.resolve.alias[`@${appSettings.name}`] =
+          path.join(opts.dir.src, appPath, 'flux');
+
+        // insert entries
         if (fs.existsSync(entryPath)) {
           const appDirName = path.parse(appSrcPath).base;
-          const appSettings = require(path.join(appTargetPath, 'settings.js')).default;
           const appAlias = appSettings.name;
           webpackConfig.entry[appDirName] = [ entryPath, ];
           return appAlias;
         }
+
         return false;
       })
       .filter((appAlias) => appAlias);
@@ -201,10 +245,12 @@ export default function defineTasks(opts) {
   });
 
   // watching source files
-  gulp.task('watch', ['build', 'webpack', 'copy'], () => {
+  gulp.task('watch', [
+    'build:nodejs', 'build:reactjs', 'webpack', 'copy',
+  ], () => {
     if (opts.watch) {
-      gulp.watch(files.scripts, ['build']);
-      gulp.watch(files.reacts, ['webpack']);
+      gulp.watch(files.scripts, ['build:nodejs']);
+      gulp.watch(files.reacts, ['build:reactjs', 'webpack']);
       gulp.watch(files.statics, ['copy']);
     }
   });
